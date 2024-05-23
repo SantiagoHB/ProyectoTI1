@@ -71,3 +71,35 @@ body {
     left: 0;
     transform: translateY(-50%);
 }
+
+/* Estilos para el hub central */
+.hub {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;  /* Asegura que el hub esté por encima de las líneas negras */
+}
+
+.hub-content {
+    display: flex;
+    gap: 10px;
+    background-color: #007BFF;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hub-content button {
+    padding: 10px 20px;
+    background-color: white;
+    color: #007BFF;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.hub-content button:hover {
+    background-color: #0056b3;
+    color: white;
+}
