@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Temperatura</title>
+    <link rel="stylesheet" href="../styles/main.css" />
+  </head>
+  <body>
+    <div class="hub">
+      <div class="hub-content">
+        <button id="user-btn"></button>
+        <button id="logout-btn">Cerrar Sesión</button>
+        <button id="change-view-btn">Cambiar Vista</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="cuadro">
+        <iframe
+          src="http://localhost:3000/d-solo/cytUiksIk/temperatura?orgId=1&refresh=5s&from=1716836867570&to=1716858467570&panelId=2"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="cuadro">
+        <iframe
+          src="http://localhost:3000/d-solo/cytUiksIk/temperatura?orgId=1&refresh=5s&from=1716836881923&to=1716858481923&panelId=3"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="cuadro">
+        <iframe
+          src="http://localhost:3000/d-solo/cytUiksIk/temperatura?orgId=1&refresh=5s&from=1716836893477&to=1716858493477&panelId=5"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="cuadro">
+        <iframe
+          src="http://localhost:3000/d-solo/cytUiksIk/temperatura?orgId=1&refresh=5s&from=1716836907007&to=1716858507007&panelId=4"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+    <div id="view-selection" class="popup">
+      <div class="popup-content">
+        <h2>Select View</h2>
+        <button id="view-humedad">Humedad</button>
+        <button id="view-temperatura">Temperatura</button>
+        <button id="view-calidad-aire">Calidad Aire</button>
+      </div>
+    </div>
+  </body>
+  <script src="..\scripts\main.js"></script>
+  <script src="..\scripts\login.js"></script>
+</html>

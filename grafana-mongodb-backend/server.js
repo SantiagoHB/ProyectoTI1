@@ -42,12 +42,12 @@ function generateRandomData() {
     // Sensores del 0 al 5
     const temperatura = (Math.random() * 15 + 20).toFixed(1); // Temperatura entre 20°C y 35°C
     const humedad = (Math.random() * 70 + 10).toFixed(1); // Humedad entre 10% y 80%
-    const calidad_aire = Math.floor(Math.random() * 100); // Calidad del aire entre 0 y 100
+    const calidadaire = Math.floor(Math.random() * 250); // Calidad del aire entre 0 y 250
     data.push({
       sensor: sensor,
       temperatura: `${temperatura}°C`,
       humedad: `${humedad}%`,
-      calidad_aire: calidad_aire,
+      calidadaire: calidadaire,
       fecha: currentTime.toISOString(),
     });
   }
@@ -86,10 +86,10 @@ app.post("/query", async (req, res) => {
 
     // Procesar las consultas para cada target
     const queries = targets.map(async (target) => {
-      const sensorNumber = parseInt(target.target.split("_")[1]); // Obtener el número de sensor
+      const [metric, sensorNumber] = target.target.split("_"); // Obtener la métrica y el número de sensor
       const collection = db.collection(collectionName);
       const documents = await collection
-        .find({ sensor: sensorNumber })
+        .find({ sensor: parseInt(sensorNumber) })
         .sort({ fecha: 1 })
         .toArray();
 
@@ -98,7 +98,7 @@ app.post("/query", async (req, res) => {
       }
 
       const datapoints = documents.map((doc) => [
-        doc.calidad_aire,
+        parseFloat(doc[metric]), // Asegurar que el valor sea un número
         new Date(doc.fecha).getTime(),
       ]);
 

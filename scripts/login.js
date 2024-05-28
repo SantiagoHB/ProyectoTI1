@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var closeBtn = document.querySelector(".close-btn");
   var loginForm = document.getElementById("login-form");
   var registerForm = document.getElementById("register-form");
+  var viewSelection = document.getElementById("view-selection");
 
   // Mostrar el popup de registro
   if (registerBtn) {
@@ -58,8 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (userFound) {
         alert("Login successful");
         localStorage.setItem("loggedInUser", username); // Guardar el usuario logueado
-        // Redirigir al home.html
-        window.location.href = "../Vistas/home.html";
+        // Mostrar la selección de vista
+        viewSelection.style.display = "flex";
       } else {
         alert("Invalid username or password");
       }
@@ -93,8 +94,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Manejar la selección de vistas
+  if (viewSelection) {
+    document
+      .getElementById("view-humedad")
+      .addEventListener("click", function () {
+        window.location.href = "../Vistas/humedad.html";
+      });
+
+    document
+      .getElementById("view-temperatura")
+      .addEventListener("click", function () {
+        window.location.href = "../Vistas/temperatura.html";
+      });
+
+    document
+      .getElementById("view-calidad-aire")
+      .addEventListener("click", function () {
+        window.location.href = "../Vistas/calidadaire.html";
+      });
+  }
+
   // Mostrar el nombre del usuario logueado y manejar el cierre de sesión
-  if (window.location.pathname.endsWith("home.html")) {
+  if (window.location.pathname.endsWith(".html")) {
     var loggedInUser = localStorage.getItem("loggedInUser");
     var userBtn = document.getElementById("user-btn");
     var logoutBtn = document.getElementById("logout-btn");
@@ -111,5 +133,14 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "../index.html";
       });
     }
+  }
+
+  // Cambiar entre vistas desde el hub
+  if (document.getElementById("change-view-btn")) {
+    document
+      .getElementById("change-view-btn")
+      .addEventListener("click", function () {
+        viewSelection.style.display = "flex";
+      });
   }
 });
