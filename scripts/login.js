@@ -11,136 +11,132 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Elementos del DOM
-  var registerBtn = document.getElementById("register-btn");
-  var registerPopup = document.getElementById("register-popup");
-  var closeBtn = document.querySelector(".close-btn");
-  var loginForm = document.getElementById("login-form");
-  var registerForm = document.getElementById("register-form");
-  var viewSelection = document.getElementById("view-selection");
+  const registerBtn = document.getElementById("register-btn");
+  const registerPopup = document.getElementById("register-popup");
+  const closeBtn = document.querySelector(".close-btn");
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+  const viewSelection = document.getElementById("view-selection");
 
-  // Mostrar el popup de registro
+  // Funciones
+  const showPopup = (popup) => {
+    if (popup) {
+      popup.style.display = "flex";
+    }
+  };
+
+  const hidePopup = (popup) => {
+    if (popup) {
+      popup.style.display = "none";
+    }
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userFound = users.find(
+      (user) => user.username === username && user.password === password
+    );
+
+    if (userFound) {
+      alert("Login successful");
+      localStorage.setItem("loggedInUser", username);
+      showPopup(viewSelection);
+    } else {
+      alert("Invalid username or password");
+    }
+  };
+
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const newUsername = document.getElementById("new-username").value;
+    const newPassword = document.getElementById("new-password").value;
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userExists = users.find((user) => user.username === newUsername);
+
+    if (userExists) {
+      alert("Username already exists");
+    } else {
+      users.push({ username: newUsername, password: newPassword });
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("New user registered: " + newUsername);
+      hidePopup(registerPopup);
+    }
+  };
+
+  const handleViewSelection = (view) => {
+    window.location.href = `../Vistas/${view}.html`;
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "../index.html";
+  };
+
+  const handleChangeView = () => {
+    showPopup(viewSelection);
+  };
+
+  // Event Listeners
   if (registerBtn) {
-    registerBtn.addEventListener("click", function () {
-      registerPopup.style.display = "flex";
-    });
+    registerBtn.addEventListener("click", () => showPopup(registerPopup));
   }
 
-  // Cerrar el popup de registro
   if (closeBtn) {
-    closeBtn.addEventListener("click", function () {
-      registerPopup.style.display = "none";
-    });
+    closeBtn.addEventListener("click", () => hidePopup(registerPopup));
   }
 
-  // Cerrar el popup si se hace clic fuera del contenido
   if (registerPopup) {
-    window.addEventListener("click", function (event) {
+    window.addEventListener("click", (event) => {
       if (event.target === registerPopup) {
-        registerPopup.style.display = "none";
+        hidePopup(registerPopup);
       }
     });
   }
 
-  // Manejar el formulario de inicio de sesión
   if (loginForm) {
-    loginForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      var username = document.getElementById("username").value;
-      var password = document.getElementById("password").value;
-
-      // Obtener usuarios de localStorage
-      var users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Verificar las credenciales
-      var userFound = users.find(function (user) {
-        return user.username === username && user.password === password;
-      });
-
-      if (userFound) {
-        alert("Login successful");
-        localStorage.setItem("loggedInUser", username); // Guardar el usuario logueado
-        // Mostrar la selección de vista
-        viewSelection.style.display = "flex";
-      } else {
-        alert("Invalid username or password");
-      }
-    });
+    loginForm.addEventListener("submit", handleLogin);
   }
 
-  // Manejar el formulario de registro
   if (registerForm) {
-    registerForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      var newUsername = document.getElementById("new-username").value;
-      var newPassword = document.getElementById("new-password").value;
-
-      // Obtener usuarios de localStorage
-      var users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Verificar si el usuario ya existe
-      var userExists = users.find(function (user) {
-        return user.username === newUsername;
-      });
-
-      if (userExists) {
-        alert("Username already exists");
-      } else {
-        // Añadir el nuevo usuario a la lista
-        users.push({ username: newUsername, password: newPassword });
-        localStorage.setItem("users", JSON.stringify(users));
-        alert("New user registered: " + newUsername);
-        registerPopup.style.display = "none";
-      }
-    });
+    registerForm.addEventListener("submit", handleRegister);
   }
 
-  // Manejar la selección de vistas
   if (viewSelection) {
     document
       .getElementById("view-humedad")
-      .addEventListener("click", function () {
-        window.location.href = "../Vistas/humedad.html";
-      });
-
+      ?.addEventListener("click", () => handleViewSelection("humedad"));
     document
       .getElementById("view-temperatura")
-      .addEventListener("click", function () {
-        window.location.href = "../Vistas/temperatura.html";
-      });
-
+      ?.addEventListener("click", () => handleViewSelection("temperatura"));
     document
       .getElementById("view-calidad-aire")
-      .addEventListener("click", function () {
-        window.location.href = "../Vistas/calidadaire.html";
-      });
+      ?.addEventListener("click", () => handleViewSelection("calidadaire"));
   }
 
-  // Mostrar el nombre del usuario logueado y manejar el cierre de sesión
+  const loggedInUser = localStorage.getItem("loggedInUser");
   if (window.location.pathname.endsWith(".html")) {
-    var loggedInUser = localStorage.getItem("loggedInUser");
-    var userBtn = document.getElementById("user-btn");
-    var logoutBtn = document.getElementById("logout-btn");
+    const userBtn = document.getElementById("user-btn");
+    const logoutBtn = document.getElementById("logout-btn");
 
     if (loggedInUser && userBtn) {
-      userBtn.textContent = loggedInUser; // Mostrar el nombre del usuario logueado
-    } else {
-      window.location.href = "../index.html"; // Redirigir al login si no hay usuario logueado
+      userBtn.textContent = loggedInUser;
+    } else if (!loggedInUser) {
+      window.location.href = "../index.html";
     }
 
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", function () {
-        localStorage.removeItem("loggedInUser");
-        window.location.href = "../index.html";
-      });
+      logoutBtn.addEventListener("click", handleLogout);
     }
   }
 
-  // Cambiar entre vistas desde el hub
   if (document.getElementById("change-view-btn")) {
     document
       .getElementById("change-view-btn")
-      .addEventListener("click", function () {
-        viewSelection.style.display = "flex";
-      });
+      .addEventListener("click", handleChangeView);
   }
 });
