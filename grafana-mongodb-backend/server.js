@@ -115,3 +115,17 @@ app.post("/query", async (req, res) => {
     res.status(500).send(err.toString());
   }
 });
+
+// Nueva ruta para manejar el webhook de Grafana
+app.post("/webhook", (req, res) => {
+  const alert = req.body;
+
+  console.log("Received alert:", alert);
+
+  if (alert.state === "alerting") {
+    console.log("Air quality alert triggered:", alert.message);
+    // Aquí puedes agregar lógica adicional, como enviar una notificación por correo, activar una alarma, etc.
+  }
+
+  res.status(200).send("Alert received");
+});

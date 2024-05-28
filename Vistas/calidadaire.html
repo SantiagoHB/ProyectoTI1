@@ -48,7 +48,17 @@
         <button id="view-calidad-aire">Calidad Aire</button>
       </div>
     </div>
+    <!-- Popup de alerta -->
+    <div id="alert-popup" class="popup" style="display: none">
+      <div class="popup-content">
+        <h2>¡Alerta de Calidad de Aire!</h2>
+        <p>El valor de calidad de aire ha superado los 150.</p>
+        <button id="close-alert-btn">Cerrar</button>
+      </div>
+    </div>
+    <audio id="alert-sound" src="../sounds/alert.mp3" preload="auto"></audio>
+    <script src="..\scripts\main.js"></script>
+    <script src="..\scripts\login.js"></script>
+    <script src="..\scripts\calidadaire.js"></script>
   </body>
-  <script src="..\scripts\main.js"></script>
-  <script src="..\scripts\login.js"></script>
 </html>
